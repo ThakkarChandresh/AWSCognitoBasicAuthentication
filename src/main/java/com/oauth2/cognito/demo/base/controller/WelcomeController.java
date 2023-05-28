@@ -4,27 +4,36 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-@RestController
+@Controller
 public class WelcomeController {
 
     @GetMapping("/")
-    public ResponseEntity<String> home(Authentication authentication) {
+    public String main(Model model) {
+        model.addAttribute("message", "Welcome To The Index Page!");
+        return "index";
+    }
+
+    @GetMapping("/greetMe")
+    public String home(Authentication authentication, Model model) {
         boolean isAuthenticated = authentication.isAuthenticated();
 
-        ResponseEntity<String> entity;
+        String response = "";
+
         if (isAuthenticated) {
             DefaultOidcUser defaultOidcUser = (DefaultOidcUser) authentication.getPrincipal();
             Map<String, Object> userAttributes = defaultOidcUser.getAttributes();
 
-            entity = new ResponseEntity<>("Welcome Dear " + userAttributes.get("cognito:username") + " You Are Authenticated!", HttpStatus.OK);
+            response += "Welcome " + userAttributes.get("cognito:username") + " ! Good Bless You With Amazing Future Ahead :)";
         } else {
-            entity = new ResponseEntity<>("Not Authenticated!", HttpStatus.UNAUTHORIZED);
+            response += "Not Authenticated!";
         }
-        return entity;
+        model.addAttribute("response", response);
+        return "greeting";
     }
 }
