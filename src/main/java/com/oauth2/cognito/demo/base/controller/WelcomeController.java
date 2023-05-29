@@ -1,7 +1,5 @@
 package com.oauth2.cognito.demo.base.controller;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Controller;
@@ -29,7 +27,7 @@ public class WelcomeController {
             DefaultOidcUser defaultOidcUser = (DefaultOidcUser) authentication.getPrincipal();
             Map<String, Object> userAttributes = defaultOidcUser.getAttributes();
 
-            response += "Welcome " + userAttributes.get("cognito:username") + " ! Good Bless You With Amazing Future Ahead :)";
+            response += "Welcome " + userAttributes.get("cognito:username") + " ! God Bless You With Amazing Future Ahead :)";
         } else {
             response += "Not Authenticated!";
         }
